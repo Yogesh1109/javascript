@@ -1,0 +1,39 @@
+<html>
+<head>
+	<title>Employee</title>
+	<script src='employee.js'></script>
+</head>
+
+<body>
+	<form id="eForm">
+		<label for="eId">Employee Id:</label><br>
+  		<input type="number" id="eId" name="eId" required><br><br>
+
+  		<label for="ename">Employee name:</label><br>
+  		<input type="text" id="ename" name="ename" required><br><br>
+
+  		<label for="phoneNumber">Phone Number:</label><br>
+  		<input type="number" id="phoneNumber" name="phoneNumber" required ><br><br>
+
+  		<label for="emailId">Email Id:</label><br>
+  		<input type="email" id="emailId" name="emailId" required><br><br>
+
+  		<input type="button" onclick="myFunction()" value="Submit">
+
+	</form>
+
+	<table id="eTable">
+		<thead>
+			<th>Employee Id</th>
+			<th>Employee Name</th>
+			<th>Phone Number</th>
+			<th>Email</th>
+			<th></th>
+			<th></th>
+		</thead>
+		<tbody id="eBody">
+			
+		</tbody>
+	</table>
+</body>
+</html>
