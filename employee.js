@@ -1,28 +1,28 @@
-
-var counter = 1;
 var numRegex = /[0-9]/;
 var alphaRegex = /[a-zA-Z]/;
 var phoneNumRegex = /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/;
 var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+var employeeData = [];
 function myFunction() {
 	var eId = document.getElementById("eId").value;
 	var eName = document.getElementById("ename").value;
 	var phNum = document.getElementById("phoneNumber").value;
 	var email = document.getElementById("emailId").value;
 	if(!numRegex.test(eId)){
-		alert("Please enter valid Id");
+		displayMessage("Please enter valid Id");
 		return;
 	}
 	if(!alphaRegex.test(ename)){
-		alert("Please enter valid Employee Name");
+		displayMessage("Please enter valid Employee Name");
 		return;
 	}
 	if(!phoneNumRegex.test(phNum)){
-		alert("Please enter valid Phone Number");
+		displayMessage("Please enter valid Phone Number");
 		return;
 	}
 	if(!emailRegex.test(email)){
-		alert("Please enter valid Email");
+		//alert("Please enter valid Email");
+		displayMessage("Please enter valid Email");
 		return;
 	}
 
@@ -39,7 +39,7 @@ function myFunction() {
 	   var oCells = oTable.rows.item(i).cells;
 	   var cellVal = oCells.item(0).innerHTML;
 	   if(cellVal == eId){
-	   		alert('Employee already added.');
+	   		displayMessage('Employee already added.');
 	   		return;
 	   } 
 	}
@@ -70,7 +70,7 @@ function myFunction() {
 	btn.type = "button";
 	btn.className = "btn";
 	btn.value = 'Edit';
-	btn.id='edit' + counter;
+	btn.id='edit' + rowLength;
 	//btn.onclick = update();
 	btn.addEventListener("click", update);
 	newCell5.appendChild(btn);
@@ -79,11 +79,15 @@ function myFunction() {
 	btn.type = "button";
 	btn.className = "btn";
 	btn.value = 'Delete';
-	btn.id='delete'+counter;
+	btn.id='delete'+ rowLength;
 	btn.addEventListener("click", deleteData);
 	//btn.onclick = deleteData();
 	newCell6.appendChild(btn);
-	counter++;
+
+	document.getElementById("eId").value = '';
+	document.getElementById("ename").value = '';
+	document.getElementById("phoneNumber").value = '';
+	document.getElementById("emailId").value = '';
 	
 
 	
@@ -97,7 +101,26 @@ function myFunction() {
 }
 
 function deleteData(e){
-		alert('delete the row'+ e.target.className);
+		
+		var id = e.target.id;
+		var rowId = parseInt(id.substring(id.length -1, id.length));
+
+		var oTable = document.getElementById('eTable');
+		var rowLength = oTable.rows.length-1;
+
+		if(rowLength>rowId){
+			for(i=rowId+1; i <= rowLength; i++){
+				var updatedIndex = i-1;
+				document.getElementById('delete'+i).id = 'delete' + updatedIndex;
+				document.getElementById('edit'+i).id = 'edit' + updatedIndex;
+			}
+		}
+
+		oTable.deleteRow(rowId);
+
+		displayMessage('Row deleted successfully');
+
+
 	}
 
 function update(e){
@@ -228,7 +251,7 @@ function updateData(e){
 		   oCells.item(3).innerHTML =  editEmail.value;
 		   var modal = document.getElementById("myModal");
 		   modal.style.display = "none";
-		  alert('values updated successfully');
+		  displayMessage('values updated successfully');
 
 		}
 	}
@@ -244,16 +267,69 @@ function enableUpdate(e){
 
 function validateEditableData(nameObj, numObj, mailObj){
 	if(!alphaRegex.test(nameObj.value)){
-		alert("Please enter valid Employee Name");
+		displayMessage("Please enter valid Employee Name");
 		return false;
 	}
 	if(!phoneNumRegex.test(numObj.value)){
-		alert("Please enter valid Phone Number");
+		displayMessage("Please enter valid Phone Number");
 		return false;
 	}
 	if(!emailRegex.test(mailObj.value)){
-		alert("Please enter valid Email");
+		displayMessage("Please enter valid Email");
 		return false;
 	}
 	return true;
 }
+
+function displayMessage(message){
+
+// Get the modal
+var modal = document.getElementById("displayMessage");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[1];
+
+document.getElementById('dialogueMessage').innerHTML = message;
+
+// When the user clicks the button, open the modal 
+  modal.style.display = "block";
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+}
+
+function sendData(){
+	//employeeData= [];
+	employeeData= [];
+	var oTable = document.getElementById('eTable');
+
+	//gets rows of table
+	var rowLength = oTable.rows.length;
+
+	//loops through rows    
+	for (i = 1; i < rowLength; i++){
+
+	   //gets cells of current row
+	   var oCells = oTable.rows.item(i).cells;
+	   var employee = {};
+		employee.id = oCells.item(0).innerHTML;
+		employee.name = oCells.item(1).innerHTML;
+		employee.phoneNumber = oCells.item(2).innerHTML;
+		employee.email = oCells.item(3).innerHTML;
+		employeeData.push(employee);
+	}
+	console.log("Employee Data: ");
+	console.log(employeeData);
+	displayMessage("Please check console for data.");
+}
+
