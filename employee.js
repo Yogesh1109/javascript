@@ -1,10 +1,10 @@
 
+var counter = 1;
+var numRegex = /[0-9]/;
+var alphaRegex = /[a-zA-Z]/;
+var phoneNumRegex = /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/;
+var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 function myFunction() {
-	var counter = 1;
-	var numRegex = /[0-9]/;
-	var alphaRegex = /[a-zA-Z]/;
-	var phoneNumRegex = /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/;
-	var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	var eId = document.getElementById("eId").value;
 	var eName = document.getElementById("ename").value;
 	var phNum = document.getElementById("phoneNumber").value;
@@ -167,8 +167,19 @@ var oTable = document.getElementById('eTable');
 
 			// Append a text node to the cell
 			var textField = document.createElement('input');
-			textField.type = "text";
 			textField.value = cellVal;
+			textField.className = 'editableFields';
+			if(i==1){
+				textField.type = "text";
+				textField.id = 'editEname' + rowId;
+			} else if (i==2){
+				textField.type = "number";
+				textField.id = 'editPhNum' + rowId;
+			} else if (i==3){
+				textField.type = "email";
+				textField.id = 'editEmail' + rowId;
+			}
+			textField.addEventListener("change", enableUpdate);
 			newCell1.appendChild(textField);
 			//newCell1.appendChild(document.createTextNode(cellVal));
 	   }
@@ -181,6 +192,7 @@ var oTable = document.getElementById('eTable');
 		btn.id='update' + rowId;
 		//btn.onclick = update();
 		btn.addEventListener("click", updateData);
+		btn.disabled = true;
 		updateCell.appendChild(btn);
 	   	
 	}
@@ -191,5 +203,57 @@ function clearEditData(){
 }
 
 function updateData(e){
-	alert(e.target.id);
+	//alert(e.target.id);
+	var id = e.target.id;
+	var rowId = id.substring(id.length -1, id.length);
+
+	var editEname = document.getElementById("editEname" + rowId);
+	var editPhNum = document.getElementById("editPhNum" + rowId);
+	var editEmail = document.getElementById("editEmail" + rowId);
+	var isDataValid = validateEditableData(editEname, editPhNum, editEmail);
+	if(isDataValid){
+		//alert('Updating data!');
+		var oTable = document.getElementById('eTable');
+
+		//gets rows of table
+		var rowLength = oTable.rows.length;
+
+		//loops through rows    
+		if(rowId<=rowLength){
+
+		   //gets cells of current row
+		   var oCells = oTable.rows.item(rowId).cells;
+		   oCells.item(1).innerHTML =  editEname.value;
+		   oCells.item(2).innerHTML =  editPhNum.value;
+		   oCells.item(3).innerHTML =  editEmail.value;
+		   var modal = document.getElementById("myModal");
+		   modal.style.display = "none";
+		  alert('values updated successfully');
+
+		}
+	}
+	//var editableFields = document.getElementsByClassName('editableFields');
+}
+
+function enableUpdate(e){
+	//alert(e.target.id);
+	var id = e.target.id;
+	var rowId = id.substring(id.length -1, id.length);
+	document.getElementById("update" + rowId).disabled = false;
+}
+
+function validateEditableData(nameObj, numObj, mailObj){
+	if(!alphaRegex.test(nameObj.value)){
+		alert("Please enter valid Employee Name");
+		return false;
+	}
+	if(!phoneNumRegex.test(numObj.value)){
+		alert("Please enter valid Phone Number");
+		return false;
+	}
+	if(!emailRegex.test(mailObj.value)){
+		alert("Please enter valid Email");
+		return false;
+	}
+	return true;
 }
