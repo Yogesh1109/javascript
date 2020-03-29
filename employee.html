@@ -1,7 +1,7 @@
 <html>
 <head>
 	<title>Employee</title>
-	<script src='employee.js'></script>
+	<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -22,6 +22,33 @@
 
 	</form>
 
+	<!-- Trigger/Open The Modal -->
+<!-- <button id="myBtn">Open Modal</button> -->
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    
+    <table id="editTable">
+    	<thead>
+    		<th>Employee Id</th>
+	    	<th>Employee Name</th>
+	    	<th>Phone Number</th>
+	    	<th>EmailId</th>
+	    	<th></th>
+    	</thead>
+	    	
+	    <tbody>
+	    	
+	    </tbody>
+    </table>
+  </div>
+
+</div>
+
 	<table id="eTable">
 		<thead>
 			<th>Employee Id</th>
@@ -35,5 +62,8 @@
 			
 		</tbody>
 	</table>
+
+<script src='employee.js'></script>
+
 </body>
 </html>
