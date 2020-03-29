@@ -17,7 +17,7 @@ function myFunction() {
 		return;
 	}
 	if(!phoneNumRegex.test(phNum)){
-		displayMessage("Please enter valid Phone Number");
+		displayMessage("Please enter valid Phone Number of 10 digits");
 		return;
 	}
 	if(!emailRegex.test(email)){
@@ -103,7 +103,7 @@ function myFunction() {
 function deleteData(e){
 		
 		var id = e.target.id;
-		var rowId = parseInt(id.substring(id.length -1, id.length));
+		var rowId = parseInt(id.substring(6, id.length));
 
 		var oTable = document.getElementById('eTable');
 		var rowLength = oTable.rows.length-1;
@@ -140,7 +140,7 @@ var btn = document.getElementById(id);
 var span = document.getElementsByClassName("close")[0];
 
 //get the rowId
-var rowId = id.substring(id.length-1, id.length);
+var rowId = id.substring(4, id.length);
 
 populateEditData(rowId);
 
@@ -228,7 +228,7 @@ function clearEditData(){
 function updateData(e){
 	//alert(e.target.id);
 	var id = e.target.id;
-	var rowId = id.substring(id.length -1, id.length);
+	var rowId = id.substring(6, id.length);
 
 	var editEname = document.getElementById("editEname" + rowId);
 	var editPhNum = document.getElementById("editPhNum" + rowId);
@@ -251,6 +251,7 @@ function updateData(e){
 		   oCells.item(3).innerHTML =  editEmail.value;
 		   var modal = document.getElementById("myModal");
 		   modal.style.display = "none";
+		   clearEditData();
 		  displayMessage('values updated successfully');
 
 		}
@@ -261,7 +262,7 @@ function updateData(e){
 function enableUpdate(e){
 	//alert(e.target.id);
 	var id = e.target.id;
-	var rowId = id.substring(id.length -1, id.length);
+	var rowId = id.substring(9, id.length);
 	document.getElementById("update" + rowId).disabled = false;
 }
 
@@ -271,7 +272,7 @@ function validateEditableData(nameObj, numObj, mailObj){
 		return false;
 	}
 	if(!phoneNumRegex.test(numObj.value)){
-		displayMessage("Please enter valid Phone Number");
+		displayMessage("Please enter valid Phone Number of 10 digits");
 		return false;
 	}
 	if(!emailRegex.test(mailObj.value)){
